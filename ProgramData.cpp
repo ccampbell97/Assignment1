@@ -35,20 +35,15 @@ string findRichest(PERSON *arr1, int size)
 	return Richest;
 }
 
-void Deposit(PERSON *arr1, int size)
+void Deposit(string CustName, PERSON *arr1, int n)
 {
-	string fName, lName, fullName;
 	int i;
 	float money = 0;
-	cout << "Enter your full name to deposit money: ";
-	cin >> fName;
-	cin >> lName;
-	fullName = fName + " " + lName;
-	cout << fullName << ", how much would you like to deposit? ";
+	cout << CustName << ", how much would you like to deposit? ";
 	cin >> money;
-	for (i = 0; i < size; i++)
+	for (i = 0; i < n; i++)
 	{
-		if (arr1[i].Name == fullName)
+		if (arr1[i].Name == CustName)
 		{
 			arr1[i].Balance += money;
 			cout << "Now your new balance is " << arr1[i].Balance << endl;
@@ -56,27 +51,23 @@ void Deposit(PERSON *arr1, int size)
 		}
 	}
 	cout << "Your name is not in our database." << endl;
-	
+
 }
 
-void NewCopy(string file, PERSON *arr1, int size)
+void NewCopy(string file, PERSON *arr1, int n)
 {
 	int i;
 	ofstream dataFile;
 	dataFile.open(file);
-	for (i = 0; i < size; i++)
+	for (i = 0; i < n; i++)
 		dataFile << arr1[i].Name << " " << arr1[i].Balance << endl;
 }
 
-int main()
+int checkFile(string file)
 {
-	int i = 0;
-	int size = 0;
-	string input = "a";
 	string temp;
-	double balance;
-	string fName, lName, fullName;
 	ifstream dataFile;
+	int size = 0;
 	dataFile.open("data.txt");
 	getline(dataFile, temp);
 	while (dataFile)
@@ -85,39 +76,59 @@ int main()
 		getline(dataFile, temp);
 	}
 	dataFile.close();
+	return size;
+}
+
+PERSON *setArray(PERSON *P, int n)
+{
+	int i;
+	ifstream dataFile;
+	string fName, lName, fullName;
+	float balance;
 	dataFile.open("data.txt");
-	PERSON* arr1 = new PERSON[size];
 	dataFile >> fName;
-	while (dataFile)
+	for(i = 0; i < n; i++)
 	{
 		dataFile >> lName;
 		dataFile >> balance;
-		arr1[i].Balance = balance;
+		P[i].Balance = balance;
 		fullName = fName + " " + lName;
-		strcpy_s(arr1[i].Name, fullName.c_str());
+		strcpy_s(P[i].Name, fullName.c_str());
 		dataFile >> fName;
-		i++;
 	}
 	dataFile.close();
+	return P;
+}
+
+int main()
+{
+	int n = 0;
+	string input, temp, CustName, fName, lName;
+	double balance;
+	n = checkFile("data.txt");
+	PERSON *P = new PERSON[n];
+	P = setArray(P, n);
 
 	cout << "Press \"q\" to quit the program" << endl << "Press \"o\" to output the current records" << endl << "Press \"d\" to deposit money" << endl << "Press \"r\" to find the richest person" << endl;
-
 	while (input != "q")
 	{
 		cout << "Please choose an option: ";
 		cin >> input;
-
 		if (input == "o")
-			Display(arr1, size);
+			Display(P, n);
 		else if (input == "d")
-			Deposit(arr1, size);
+		{
+			cout << "Enter your full name to deposit money: ";
+			cin >> fName;
+			cin >> lName;
+			CustName = fName + " " + lName;
+			Deposit(CustName, P, n);
+		}
 		else if (input == "r")
-			cout << "The Richest person is " << findRichest(arr1, size) << endl;
+			cout << "The Richest person is " << findRichest(P, n) << endl;
 		else if (input == "q")
-			NewCopy("data.txt", arr1, size);
+			NewCopy("data.txt", P, n);
 		else
 			cout << "Not a valid option. Please try again: ";
-
-		cout << endl << "Press \"q\" to quit the program" << endl << "Press \"o\" to output the current records" << endl << "Press \"d\" to deposit money" << endl << "Press \"r\" to find the richest person" << endl;
 	}
 }

@@ -106,7 +106,7 @@ int main()
 	string input, temp, CustName, fName, lName;
 	double balance;
 	n = checkFile("data.txt");
-	PERSON *P = new PERSON[n];
+	PERSON P[n];
 	P = setArray(P, n);
 
 	cout << "Press \"q\" to quit the program" << endl << "Press \"o\" to output the current records" << endl << "Press \"d\" to deposit money" << endl << "Press \"r\" to find the richest person" << endl;

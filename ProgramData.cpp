@@ -79,7 +79,7 @@ int checkFile(string file)
 	return size;
 }
 
-PERSON *setArray(PERSON *P, int n)
+void setArray(PERSON P[], int n)
 {
 	int i;
 	ifstream dataFile;
@@ -87,7 +87,7 @@ PERSON *setArray(PERSON *P, int n)
 	float balance;
 	dataFile.open("data.txt");
 	dataFile >> fName;
-	for(i = 0; i < n; i++)
+	for (i = 0; i < n; i++)
 	{
 		dataFile >> lName;
 		dataFile >> balance;
@@ -97,7 +97,6 @@ PERSON *setArray(PERSON *P, int n)
 		dataFile >> fName;
 	}
 	dataFile.close();
-	return P;
 }
 
 int main()
@@ -106,8 +105,8 @@ int main()
 	string input, temp, CustName, fName, lName;
 	double balance;
 	n = checkFile("data.txt");
-	PERSON P[n];
-	P = setArray(P, n);
+	PERSON P[6];
+	setArray(P, n);
 
 	cout << "Press \"q\" to quit the program" << endl << "Press \"o\" to output the current records" << endl << "Press \"d\" to deposit money" << endl << "Press \"r\" to find the richest person" << endl;
 	while (input != "q")

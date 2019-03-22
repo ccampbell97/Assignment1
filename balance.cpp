@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstring>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ struct  PERSON
 	float Balance;
 };
 
-void printmenu() 
+void printmenu()
 {
 	cout << "Please enter a choice:" << endl;
 	cout << "1. Display records" << endl;
@@ -100,7 +101,7 @@ PERSON *setArray(int &n)
 		dataFile >> lName;
 		dataFile >> P[i].Balance;
 		fullName = fName.substr(0,9) + " " + lName.substr(0,10);
-		strcpy_s(P[i].Name, fullName.c_str());
+		strcpy(P[i].Name, fullName.c_str());
 	}
 	dataFile.close();
 	return P;
@@ -132,7 +133,7 @@ int main()
 			cin >> fName;
 			cin >> lName;
 			CustName = fName + " " + lName;
-			cout << CustName << "Amount: ";
+			cout << "Amount: ";
 			cin >> amount;
 			Deposit(P, CustName, n, amount);
 			break;
